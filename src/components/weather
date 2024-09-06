@@ -1,0 +1,82 @@
+/* src/components/Weather.jsx
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './Weather.css'; // Asegúrate de que este archivo exista
+
+const Weather = () => {
+  const [weatherData, setWeatherData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [tempUnit, setTempUnit] = useState('metric'); // 'metric' para Celsius
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const apiKey = '99caf4253d11c80a0dc7b0ed0462c3eb'; // Tu API Key
+        const lat = -0.2546682; // Latitud de Ecuador
+        const lon = -79.1758975; // Longitud de Ecuador
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${tempUnit}`);
+        setWeatherData(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching weather data:", err);
+        if (err.response) {
+          setError(`Error ${err.response.status}: ${err.response.data.message}`);
+        } else {
+          setError("Error al obtener los datos del clima. Por favor, intenta de nuevo.");
+        }
+        setLoading(false);
+      }
+    };
+
+    fetchWeatherData();
+  }, [tempUnit]);
+
+  const toggleTempUnit = () => {
+    setTempUnit((prev) => (prev === 'metric' ? 'imperial' : 'metric'));
+  };
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    fetchWeatherData();
+  };
+
+  if (loading) return <div className="loading">Cargando...</div>;
+  if (error) return (
+    <div className="error">
+      <p>{error}</p>
+      <button onClick={handleRetry}>Reintentar</button>
+    </div>
+  );
+
+  return (
+    <div className="weather-card">
+      <h1 className="city-name">Quito, Ecuador</h1>
+      <p className="weather-condition">{weatherData.weather[0].description}</p>
+      <div className="temperature">
+        <span className="temp-value">{Math.round(weatherData.main.temp)}</span>
+        <span className="temp-unit">°C</span>
+      </div>
+      <div className="weather-details">
+        <div className="detail">
+          <span className="detail-label">Viento:</span>
+          <span className="wind-speed">{weatherData.wind.speed}</span> m/s
+        </div>
+        <div className="detail">
+          <span className="detail-label">Nubes:</span>
+          <span className="cloud-percentage">{weatherData.clouds.all}</span>%
+        </div>
+        <div className="detail">
+          <span className="detail-label">Presión:</span>
+          <span className="pressure">{weatherData.main.pressure}</span> hPa
+        </div>
+      </div>
+      <button className="temp-unit-btn" onClick={toggleTempUnit}>
+        Cambiar a °F
+      </button>
+    </div>
+  );
+};
+
+export default Weather; */
